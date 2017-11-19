@@ -69,6 +69,22 @@ void mapear(struct celula ***mapa){
 	}
 }
 
+void printmap(struct celula ***mapa){
+	struct celula *it=(*mapa)[0]->dir;
+	struct celula *it2=(*mapa)[0]->dir;
+	while(it2!=NULL){
+		printf("%d,%d\t",it->linha , it->coluna);
+		if(it->dir != NULL){
+			it=it->dir;
+		}else{
+			printf("\n");
+			it=it2->bot;
+			it2=it2->bot;
+		}
+	}
+}
+
+
 int jogada(int i,int j){
 	return i+(rand()%(j-i+1));
 }
