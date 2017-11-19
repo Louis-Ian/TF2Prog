@@ -10,9 +10,9 @@ struct celula{
 	struct celula* bot; 
 };
 
-void inicializar(struct celula***){}
-void inserir(struct celula** ){}
-void criar(struct celula***){}
-void mapear(struct celula***){}
-void printmap(struct celula***){}
-int jogada(int ,int ){}
+void inicializar(struct celula*** mapa);
+void inserir(struct celula** lista);
+void criar(struct celula*** mapa);
+void mapear(struct celula*** mapa );
+void printmap(struct celula*** mapa);
+int jogada(int i,int j);
