@@ -24,7 +24,7 @@ int jogada(){
 	int dezOuUnid = 10;
 
 	printf("Insira as coordenadas do baombardeio: ");
-	scanf("%[^\n]");//trava aqui!
+	scanf("%[^\n]",s);//trava aqui!
 	printf("0\n");
 	/*do{
 		printf("%d\n", i);
