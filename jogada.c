@@ -17,14 +17,14 @@ int jogada(){
 	char* jogada;
 	int linha = 0;
 	int coluna = 0;
-	char s;
+	char s[20];
 	char c;
 	int i = 0;
 	int countChars = 0;
 	int dezOuUnid = 10;
 
 	printf("Insira as coordenadas do baombardeio: ");
-	scanf("%[^\n]",s);//trava aqui!
+	scanf("%[^\n]",s);
 	printf("0\n");
 	/*do{
 		printf("%d\n", i);
@@ -36,7 +36,7 @@ int jogada(){
 	
 	printf("1\n");
 
-	i = 0;
+	i = 0;//trava aqui!
 	do{
 		c = jogada[i];
 		if(c >= 65 && c <= 76){
