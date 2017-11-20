@@ -14,17 +14,17 @@ typedef struct celula{
 } Celula;
 
 int jogada(){
-	char* jogada;
+	char jogada[10];
 	int linha = 0;
 	int coluna = 0;
-	char s[20];
+	char s[10];
 	char c;
 	int i = 0;
 	int countChars = 0;
 	int dezOuUnid = 10;
 
 	printf("Insira as coordenadas do baombardeio: ");
-	scanf("%[^\n]",s);
+	scanf("%[^\n]",jogada);
 	printf("0\n");
 	/*do{
 		printf("%d\n", i);
