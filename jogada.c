@@ -35,22 +35,28 @@ int jogada(){
 	}while(strcmp(s,"\n") != 0);*/
 	
 	printf("1\n");
+	printf("%d\n",countChars);
 
 	i = 0;//trava aqui!
 	do{
 		c = jogada[i];
-		if(c >= 65 && c <= 76){
-			coluna += (c %65)+1;
+		if(c >= 'A' && c <= 'L'){
+			printf("coluna: %d\n",c-'A'+1);
+			coluna += c - 'A' + 1;
 		}
-		else if(c >= 97 && c <= 108){
-			coluna += (c %97)+1;
+		else if(c >= 'a' && c <= 'l'){
+			printf("coluna: %d\n",c - 'a' + 1);
+			coluna += c - 'a' + 1;
 		}
 		else if((c >= 48 && c <= 57)){
-			linha += ((c %48)+1) * dezOuUnid;
+			s[0] = c;
+			linha += atoi(s);
+			printf("linha: %d\n",linha);
 			dezOuUnid = 1;
 		}
 		i++;
-	}while(i<countChars);
+	}while(i<10);
+	printf("l=%d ; c=%d\n", linha, coluna);
 
 	return 10*(linha-1) + coluna;
 }
