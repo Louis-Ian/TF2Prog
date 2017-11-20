@@ -11,6 +11,7 @@ void inicializar(struct celula*** mapa){
 		(*mapa)[i]->esq=NULL;
 	}
 }
+
 void inserir(struct celula** lista){
 	struct celula* novo=(struct celula*)malloc(sizeof(struct celula));
 	novo->top=NULL;
@@ -84,7 +85,6 @@ void printmap(struct celula ***mapa){
 	}
 }
 
-
-int jogada(int i,int j){
+int jogadaRand(int i,int j){
 	return i+(rand()%(j-i+1));
 }

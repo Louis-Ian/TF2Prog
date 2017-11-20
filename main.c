@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include "batalhanaval.h"
 
-
 int main(){
 	struct celula** mapa;
 	inicializar(&mapa);

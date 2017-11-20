@@ -15,4 +15,5 @@ void inserir(struct celula** lista);
 void criar(struct celula*** mapa);
 void mapear(struct celula*** mapa );
 void printmap(struct celula*** mapa);
-int jogada(int i,int j);
+int jogadaRand(int i,int j);
+int jogada();
