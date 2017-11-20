@@ -86,5 +86,6 @@ void printmap(struct celula ***mapa){
 }
 
 int jogadaRand(int i,int j){
+	//srand(time(NULL));
 	return i+(rand()%(j-i+1));
 }
