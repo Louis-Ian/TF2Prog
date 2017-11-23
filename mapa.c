@@ -23,75 +23,94 @@ void inserir(struct celula** lista){
 	novo->top=NULL;
 	novo->bot=NULL;
 	novo->existe=1;
-	if ((*lista)->dir==NULL){
-		(*lista)->dir=novo;
+	if ((*lista)==NULL){
+		(*lista)=novo;
 		novo->dir=NULL;
-		novo->esq=(*lista);
+		novo->esq=NULL;
 	}else{
 		novo->dir=(*lista)->dir;
 		novo->esq=(*lista);
-		(*lista)->dir->esq=novo;		
+		if((*lista)->dir!=NULL) (*lista)->dir->esq=novo;		
 		(*lista)->dir=novo;
 	}
 }
 
 void criar(struct celula ***mapa){
+	struct celula *it3;
+	struct celula *it;
+	struct celula *it2;
 	for (int i = 0; i < 12; ++i)
 	{
-		int c=12;
+		int c=11;
 		while (--c>=0){
 			inserir(&((*mapa)[i]));
 		}
 	}
 	for(int i=0; i < 11; i++){
-		struct celula *it=(*mapa)[i];
-		struct celula *it2=(*mapa)[i+1];
-		while(it->dir!=NULL){
-			it->dir->bot=it2->dir;
-			it2->dir->top=it->dir;
-			it=it->dir;
-			it2=it2->dir;
+		it=((*mapa)[i]);
+		it2=((*mapa)[i+1]);
+		while(it!=NULL){
+			it->bot=it2;
+			it2->top=it;
+			if(it->dir==NULL){
+				it3=it;
+			}
+			if(it!=NULL) it=it->dir;
+			if(it2!=NULL) it2=it2->dir;
 		}
-
+		it3->dir=((*mapa)[i+1]);
+		((*mapa)[i+1])->esq=it3;	
 	}
 }
 
 void mapear(struct celula ***mapa){
-	struct celula *it=(*mapa)[0]->dir;
-	struct celula *it2=(*mapa)[0]->dir;
+	struct celula *it=((*mapa)[0]);
 	int i=0;
 	int j=0;
-	while(it2!=NULL){
+	while(it!=NULL){
 		it->linha=i;
 		it->coluna=j;
-		if(it->dir != NULL){
-			it=it->dir;
-		}else{
-			it=it2->bot;
-			it2=it2->bot;
-		}
+		if(it!=NULL) it=it->dir;
 		j++;
 		if(j==12){i++;j%=12;}
-
 	}
 }
 
 void printmap(struct celula ***mapa){
-	struct celula *it=(*mapa)[0]->dir;
-	struct celula *it2=(*mapa)[0]->dir;
-	while(it2!=NULL){
-		printf("%d,%d\t",it->linha , it->coluna);
-		if(it->dir != NULL){
-			it=it->dir;
-		}else{
-			printf("\n");
-			it=it2->bot;
-			it2=it2->bot;
-		}
+	struct celula *it=(*mapa)[0];
+	int j=0;
+	while(it!=NULL){
+		printf("%d,%d  ",it->linha , it->coluna);
+		if(it!=NULL) it=it->dir;
+		j++;
+		if(j==12){j%=12;printf("\n");}
 	}
 }
+	/*
+	void printmap(struct celula ***mapa){
+		struct celula *it=(*mapa)[0]->dir;
+		struct celula *it2=(*mapa)[0]->dir;
+		while(it2!=NULL){
+			printf("%d,%d\t",it->linha , it->coluna);
+			if(it->dir != it2->bot){
+				it=it->dir;
+			}else{
+				printf("\n");
+				it=it2->bot;
+				it2=it2->bot;
+			}
+		}
+	}
+	*/
 
-
+struct celula* acesso(struct celula*** mapa,int linha, int coluna){
+	struct celula* it=(*mapa)[linha];
+	while(coluna>0){
+		it=it->dir;
+		coluna--;
+	}
+	return it;
+}
 
 int main(){
 	struct celula** mapa;
@@ -99,5 +118,7 @@ int main(){
 	criar(&mapa);
 	mapear(&mapa);
 	printmap(&mapa);
+	struct celula* i=acesso(&mapa,11,11);
+	printf("testizin : %d,%d\n", i->linha, i->coluna );
 	return 0;
 }
