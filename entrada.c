@@ -84,7 +84,7 @@ void entrada(struct no** fila){
 				}
 				if(entrada[i+1]!='\0'){
 					c1=entrada[i+1];
-					if ((int)c1>=48 && (int)c1<=57){
+					if (((int)c1>=48 && (int)c1<=57) || (((int)c1>=65 && (int)c1<=77)||((int)c1>=97 && (int)c1<=108) && ok2==1)){
 						ok=1;
 						ok1=0;
 					}
@@ -96,7 +96,7 @@ void entrada(struct no** fila){
 				incluirfila(fila,c0);
 				if(entrada[i+1]!='\0'){
 					c1=entrada[i+1];
-					if (((int)c1>=65 && (int)c1<=77)||((int)c1>=97 && (int)c1<=108)){
+					if ((((int)c1>=65 && (int)c1<=77)|| ((int)c1>=97 && (int)c1<=108) ) || ((int)c1>=48 && (int)c1<=57 && ok1==1)){
 						ok=1;
 						ok2=0;
 					}
@@ -160,23 +160,3 @@ int main(){
 	return 0;
 }
 
-
-
-
-
-	/*
-	void printmap(struct celula ***mapa){
-		struct celula *it=(*mapa)[0]->dir;
-		struct celula *it2=(*mapa)[0]->dir;
-		while(it2!=NULL){
-			printf("%d,%d\t",it->linha , it->coluna);
-			if(it->dir != it2->bot){
-				it=it->dir;
-			}else{
-				printf("\n");
-				it=it2->bot;
-				it2=it2->bot;
-			}
-		}
-	}
-	*/
