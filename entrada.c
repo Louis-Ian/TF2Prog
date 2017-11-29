@@ -8,17 +8,15 @@ struct no{
 };
 
 void inicializarfila(struct no **fila){
-	(*fila)=(struct no*)malloc(sizeof(struct no));
-	(*fila)->prox=NULL;
-	(*fila)->fim=NULL;
+	(*fila)=NULL;
 }
 
 void incluirfila(struct no **fila,char x){
 	struct no* novo=malloc(sizeof(struct no));
 	novo->c=x;
 	novo->prox=NULL;
-	if ((*fila)->fim==NULL){
-		(*fila)->prox=novo;
+	if ((*fila)==NULL){
+		(*fila)=novo;
 	}else{	
 		(*fila)->fim->prox=novo;
 	}
@@ -26,14 +24,13 @@ void incluirfila(struct no **fila,char x){
 }
 
 void removerfila(struct no **fila){
-		struct no* i=(*fila)->prox;
-		(*fila)->prox=i->prox;
+		struct no* i=(*fila);
+		(*fila)=(*fila)->prox;
 		free(i);
-		if((*fila)->prox==NULL) (*fila)->fim=NULL;
 }
 int tamanhofila(struct no **fila){
 	int i=0;
-	struct no* it=(*fila)->prox;
+	struct no* it=(*fila);
 	while(it!=NULL){
 		i++;
 		it=it->prox;
@@ -41,7 +38,7 @@ int tamanhofila(struct no **fila){
 	return i;
 }
 void percorrer(struct no **fila){
-	struct no* it=(*fila)->prox;
+	struct no* it=(*fila);
 	while(it!=NULL){
 		printf("%c",it->c);
 		it=it->prox;
@@ -69,41 +66,45 @@ void entrada(struct no** fila){
 		scanf("%[^\n]",entrada);
 		getchar();
 		ok1=ok2=0;
-			ok=0;
+
 		for(i=0; entrada[i]!='\0' && ok==0; i++){
 			c0=entrada[i];
+
 			if (validonumero(c0)){
 				ok1=1;
 				incluirfila(fila,c0);
+
 				if(entrada[i+1]!='\0'){	
 					c1=entrada[i+1];
 					if ((int)c0==49 && (int)c1>=48 && (int)c1<=50){
-						incluirfila(fila,c1);
-						i++;		
+						incluirfila(fila,c1);i++;		
 					}
 				}
+
 				if(entrada[i+1]!='\0'){
-					c1=entrada[i+1];
-					if (((int)c1>=48 && (int)c1<=57) || (((int)c1>=65 && (int)c1<=77)||((int)c1>=97 && (int)c1<=108) && ok2==1)){
-						ok=1;
-						ok1=0;
-					}
+					//c1=entrada[i+1];
+					//if (((int)c1>=48 && (int)c1<=57) || (((int)c1>=65 && (int)c1<=90)||((int)c1>=97 && (int)c1<=122) && ok2==1)){
+					//	ok=1;
+					//	ok1=0;
+				//	}
+					if(ok1 && ok2) {ok=1;ok1=0;ok2=0;}
 				}
-			}		
-			
+			}
+
 			if(validochar(c0)){
 				ok2=1;
 				incluirfila(fila,c0);
 				if(entrada[i+1]!='\0'){
-					c1=entrada[i+1];
-					if ((((int)c1>=65 && (int)c1<=77)|| ((int)c1>=97 && (int)c1<=108) ) || ((int)c1>=48 && (int)c1<=57 && ok1==1)){
-						ok=1;
-						ok2=0;
-					}
+					//c1=entrada[i+1];
+					//if ((((int)c1>=65 && (int)c1<=90) || ((int)c1>=97 && (int)c1<=122) ) || ((int)c1>=48 && (int)c1<=57 && ok1==1)){
+					//	ok=1;
+					//	ok2=0;
+					//}
+					if(ok1 && ok2) {ok=1;ok1=0;ok2=0;}
 				}
+
 			}
-		
-			if (ok1 && ok2) {return;}
+			if (ok1 && ok2) return;
 		}
 		ok=0;
 		printf("entrada invalida\n");
@@ -116,7 +117,7 @@ void entrada(struct no** fila){
 
 
 int linha(struct no** fila){
-	struct no* it=(*fila)->prox;
+	struct no* it=(*fila);
 	int num;
 	while(it!=NULL){
 		if(validonumero(it->c)){
@@ -134,7 +135,7 @@ int linha(struct no** fila){
 }
 
 int coluna(struct no** fila){
-	struct no* it=(*fila)->prox;
+	struct no* it=(*fila);
 	char c;
 	while(it!=NULL){
 		if(validochar(it->c)){
@@ -159,4 +160,3 @@ int main(){
 	printf("coord lxc : %d,%d\n", a, b);
 	return 0;
 }
-
