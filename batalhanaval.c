@@ -116,7 +116,6 @@ void entrada(struct no** fila){
 			remover_fila(fila);
 		}
 	}
-
 }
 
 int linha(struct no** fila){
@@ -150,15 +149,15 @@ int coluna(struct no** fila){
 		return c - 'a';
 	else
 		return c - 'A';
-
 }
 
-void inicializar(struct celula*** mapa){
+void inicializar_mapa(struct celula*** mapa){
 	(*mapa)=(struct celula**)malloc(12*sizeof(struct celula*));
 	for (int i = 0; i < 12; i++){
 		(*mapa)[i]=NULL;
 	}
 }
+
 void inserir(struct celula** lista){
 	struct celula* novo=(struct celula*)malloc(sizeof(struct celula));
 	novo->top=NULL;
@@ -177,7 +176,7 @@ void inserir(struct celula** lista){
 	}
 }
 
-void criar(struct celula ***mapa){
+void criar_mapa(struct celula ***mapa){
 	struct celula *it3;
 	struct celula *it;
 	struct celula *it2;
@@ -215,7 +214,10 @@ void mapear(struct celula ***mapa){
 		it->coluna=j;
 		if(it!=NULL) it=it->dir;
 		j++;
-		if(j==12){i++;j%=12;}
+		if(j==12){
+			i++;
+			j%=12;
+		}
 	}
 }
 
@@ -251,6 +253,10 @@ void printmap(struct celula ***mapa){
 	}
 	*/
 
+int range(int i,int j){
+	return i+(rand()%(j-i+1));
+}
+
 struct celula* acesso(struct celula*** mapa,int linha, int coluna){
 	struct celula* it=(*mapa)[linha];
 	while(coluna>0){
@@ -260,12 +266,7 @@ struct celula* acesso(struct celula*** mapa,int linha, int coluna){
 	return it;
 }
 
-
-int range(int i,int j){
-	return i+(rand()%(j-i+1));
-}
-
-int inializarjogo(struct celula ***mapa){
+int distribuir_embarcacoes(struct celula ***mapa){
 	int n=9;
 	int i,j,d;
 	struct celula* it;
@@ -276,7 +277,7 @@ int inializarjogo(struct celula ***mapa){
 				do{
 				i=range(0,11);
 				j=range(0,7);
-				it=acesso(mapa,i,j);
+				it= acesso(mapa,i,j);
 				}while(it->existe==1 || it->dir->existe==1 || it->dir->dir->existe==1 || it->dir->dir->dir->existe==1 || it->dir->dir->dir->dir->existe==1);
 				it->conteudo='<';
 				it->dir->conteudo='#';

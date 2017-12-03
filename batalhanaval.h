@@ -47,9 +47,13 @@ int validar_char(char c);
 int linha(struct no** fila);
 int coluna(struct no** fila);
 void entrada(struct no** fila);
-void inicializar(struct celula*** mapa);
+
+void inicializar_mapa(struct celula*** mapa);
 void inserir(struct celula** lista);
-void criar(struct celula*** mapa);
+void criar_mapa(struct celula*** mapa);
+int range(int i, int j);
+struct celula* acesso(struct celula*** mapa,int linha, int coluna);
+int distribuir_embarcacoes(struct celula ***mapa);
 void mapear(struct celula*** mapa );
 void printmap(struct celula*** mapa);
 int jogadaRand(int i,int j);
