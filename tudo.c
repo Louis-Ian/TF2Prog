@@ -343,7 +343,7 @@ int coluna(no** fila){
 
 }
 
-
+//qqr coisa confusa eh desconsiderada por exemplo 'a' '1' '2' ' ' torna-se confuso, visto o espaco no fim q pode ter sido fruto de uma falha motora
 celula* entrada(no** fila, celula*** mapa){
 	int ok1,ok2,ok,i;
 	char *entrada=malloc(30*sizeof(char));	
@@ -357,7 +357,7 @@ celula* entrada(no** fila, celula*** mapa){
 		for(i=0; entrada[i]!='\0' && ok==0; i++){
 			
 			c0=entrada[i];
-
+			if( !(((int)c0>=65 && (int)c0<=90)||((int)c0>=97 && (int)c0<=122)) && !((int)c1>=48 && (int)c1<=57)&& !ok1 && !ok2){ok=1;} //,,,,,,,,a1
 			if ((int)c0>=49 && (int)c0<=57){//numero
 				if(ok1){ok1=0;ok=1;}
 				else{
@@ -366,14 +366,14 @@ celula* entrada(no** fila, celula*** mapa){
 					i++;
 					if(entrada[i]!='\0'){
 						c1=entrada[i];
-						if (ok1 && ok2 && entrada[i+1]=='\0') {ok1=0;ok=1;} //a1,
+						if(!((int)c1>=48 && (int)c1<=57) && ok1 && ok2){ok1=0;ok=1;}//ValidoXX a1... X qqr
 						if((int)c0==49){ //1X
 							if((int)c1>=48 && (int)c1<=50){ //10-12
 								incluir_fila(fila,c1);
 								i++;
 								if(entrada[i]!='\0'){
 									c1=entrada[i];
-									if((int)c1>=48 && (int)c1<=57 || ok1 && ok2){ // XXX... ou ValidoXXX
+									if((int)c1>=48 && (int)c1<=57 || ok1 && ok2){ // XXX... ou ValidoXXX a12... X qqr
 										ok1=0;ok=1;
 									}
 								}
@@ -398,7 +398,7 @@ celula* entrada(no** fila, celula*** mapa){
 					ok2=1;
 					incluir_fila(fila,c0);
 					if(entrada[i+1]!='\0'){
-						if(ok1 && ok2){ok1=0;ok2=0;ok1=1;}
+						if(ok1 && ok2){ok1=0;ok2=0;ok1=1;}//ValidoXXX... X qqr
 					}
 				}else{
 					ok1=0;ok2=0;ok=1;
