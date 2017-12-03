@@ -1,17 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#define true 1
+#define false 0
+
 struct no{
 	char c;
 	struct  no* prox;
 	struct no* fim;
 };
 
-void inicializarfila(struct no **fila){
+void inicializar_fila(struct no **fila){
 	(*fila)=NULL;
 }
 
-void incluirfila(struct no **fila,char x){
+void incluir_fila(struct no **fila,char x){
 	struct no* novo=malloc(sizeof(struct no));
 	novo->c=x;
 	novo->prox=NULL;
@@ -23,12 +27,13 @@ void incluirfila(struct no **fila,char x){
 	(*fila)->fim=novo;
 }
 
-void removerfila(struct no **fila){
+void remover_fila(struct no **fila){
 		struct no* i=(*fila);
 		(*fila)=(*fila)->prox;
 		free(i);
 }
-int tamanhofila(struct no **fila){
+
+int tamanho_fila(struct no **fila){
 	int i=0;
 	struct no* it=(*fila);
 	while(it!=NULL){
@@ -37,7 +42,8 @@ int tamanhofila(struct no **fila){
 	}
 	return i;
 }
-void percorrer(struct no **fila){
+
+void percorrer_fila(struct no **fila){
 	struct no* it=(*fila);
 	while(it!=NULL){
 		printf("%c",it->c);
@@ -45,84 +51,89 @@ void percorrer(struct no **fila){
 	}
 	printf("\n");
 }
-int validonumero(char c){
-	if ((int)c>=49 && (int)c<=57){
-		return 1;
+
+int validar_numero(char c){
+	if (c >= '0' && c <= '9'){
+		return true;
 	}
-	return 0;
+	return false;
 }
-int validochar(char c){
-	if (((int)c>=65 && (int)c<=77)||((int)c>=97 && (int)c<=108)){
-		return 1;
+
+int validar_char(char c){
+	if ((c >= 'a' && c <= 'z')||(c >= 'A' && c <= 'Z')){
+		return true;
 	}
-	return 0;
+	return false;
 }
+
 void entrada(struct no** fila){
-	int ok1,ok2,ok,i;
+	int okNum,okChar,ok,i;
 	char *entrada=malloc(30*sizeof(char));	
 	char c0,c1;
 	ok=0;
 	while(ok==0){		
 		scanf("%[^\n]",entrada);
 		getchar();
-		ok1=ok2=0;
+		okNum=okChar=0;
 
 		for(i=0; entrada[i]!='\0' && ok==0; i++){
 			c0=entrada[i];
 
-			if (validonumero(c0)){
-				ok1=1;
-				incluirfila(fila,c0);
+			if (validar_numero(c0)){
+				okNum=1;
+				incluir_fila(fila,c0);
 
 				if(entrada[i+1]!='\0'){	
 					c1=entrada[i+1];
-					if ((int)c0==49 && (int)c1>=48 && (int)c1<=50){
-						incluirfila(fila,c1);i++;		
+					if (c0 == '1' && c1 >= '0' && c1 <= '2'){
+						incluir_fila(fila,c1);
+						i++;
 					}
 				}
 
 				if(entrada[i+1]!='\0'){
 					//c1=entrada[i+1];
-					//if (((int)c1>=48 && (int)c1<=57) || (((int)c1>=65 && (int)c1<=90)||((int)c1>=97 && (int)c1<=122) && ok2==1)){
+					//if (((int)c1>=48 && (int)c1<=57) || (((int)c1>=65 && (int)c1<=90)||((int)c1>=97 && (int)c1<=122) && okChar==1)){
 					//	ok=1;
-					//	ok1=0;
+					//	okNum=0;
 				//	}
-					if(ok1 && ok2) {ok=1;ok1=0;ok2=0;}
+					if(okNum && okChar){
+						ok=1;okNum=0;okChar=0;
+					}
 				}
 			}
 
-			if(validochar(c0)){
-				ok2=1;
-				incluirfila(fila,c0);
+			if(validar_char(c0)){
+				okChar=1;
+				incluir_fila(fila,c0);
 				if(entrada[i+1]!='\0'){
 					//c1=entrada[i+1];
-					//if ((((int)c1>=65 && (int)c1<=90) || ((int)c1>=97 && (int)c1<=122) ) || ((int)c1>=48 && (int)c1<=57 && ok1==1)){
+					//if ((((int)c1>=65 && (int)c1<=90) || ((int)c1>=97 && (int)c1<=122) ) || ((int)c1>=48 && (int)c1<=57 && okNum==1)){
 					//	ok=1;
-					//	ok2=0;
+					//	okChar=0;
 					//}
-					if(ok1 && ok2) {ok=1;ok1=0;ok2=0;}
+					if(okNum && okChar) {ok=1;okNum=0;okChar=0;}
 				}
 
 			}
-			if (ok1 && ok2) return;
+			if (okNum && okChar) return;
 		}
 		ok=0;
 		printf("entrada invalida\n");
-		while(tamanhofila(fila)!=0){
-			removerfila(fila);
+		while(tamanho_fila(fila)!=0){
+			remover_fila(fila);
 		}
 	}
 
 }
 
-
 int linha(struct no** fila){
 	struct no* it=(*fila);
 	int num;
 	while(it!=NULL){
-		if(validonumero(it->c)){
+		if(validar_numero(it->c)){
 			num=((int)(it->c))-48-1;
-			if(it->prox!=NULL && ((int)(it->prox->c)>=48 && (int)(it->prox->c)<=57)){
+			if(it->prox != NULL && ((int)(it->prox->c) >= 48 && (int)(it->prox->c) <= 57)){
 				num++;
 				num*=10;
 				num+=((int)(it->prox->c))-48-1;
@@ -138,23 +149,24 @@ int coluna(struct no** fila){
 	struct no* it=(*fila);
 	char c;
 	while(it!=NULL){
-		if(validochar(it->c)){
+		if(validar_char(it->c)){
 			c=it->c;
 		}	
 		it=it->prox;
 	}
-	if ((int)c>=65 && (int)c<=77)return (int)c - 65;
-	else return (int)c - 97;
+	if (c >= 'a' && c <= 'z')
+		return c - 'a';
+	else
+		return c - 'A';
 
 }
 
-
 int main(){
 	struct no* fila;
-	inicializarfila(&fila);
+	inicializar_fila(&fila);
 	entrada(&fila);
 	printf("lista: ");
-	percorrer(&fila);
+	percorrer_fila(&fila);
 	int a=linha(&fila);
 	int b=coluna(&fila);
 	printf("coord lxc : %d,%d\n", a, b);

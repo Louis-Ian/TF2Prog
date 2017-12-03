@@ -3,17 +3,17 @@
 
 #include "batalhanaval.h"
 
-void inicializar(struct celula*** mapa){
-	(*mapa)=(struct celula**)malloc(12*sizeof(struct celula*));
+void inicializar(celula*** mapa){
+	(*mapa)=(celula**)malloc(12*sizeof(celula*));
 	for (int i = 0; i < 12; i++){
-		(*mapa)[i]=(struct celula*)malloc(sizeof(struct celula));
+		(*mapa)[i]=(celula*)malloc(sizeof(celula));
 		(*mapa)[i]->dir=NULL;
 		(*mapa)[i]->esq=NULL;
 	}
 }
 
-void inserir(struct celula** lista){
-	struct celula* novo=(struct celula*)malloc(sizeof(struct celula));
+void inserir(celula** lista){
+	celula* novo=(celula*)malloc(sizeof(celula));
 	novo->top=NULL;
 	novo->bot=NULL;
 	novo->existe=1;
@@ -29,7 +29,7 @@ void inserir(struct celula** lista){
 	}
 }
 
-void criar(struct celula ***mapa){
+void criar(celula ***mapa){
 	for (int i = 0; i < 12; ++i)
 	{
 		int c=12;
@@ -38,8 +38,8 @@ void criar(struct celula ***mapa){
 		}
 	}
 	for(int i=0; i < 11; i++){
-		struct celula *it=(*mapa)[i];
-		struct celula *it2=(*mapa)[i+1];
+		celula *it=(*mapa)[i];
+		celula *it2=(*mapa)[i+1];
 		while(it->dir!=NULL){
 			it->dir->bot=it2->dir;
 			it2->dir->top=it->dir;
@@ -50,9 +50,9 @@ void criar(struct celula ***mapa){
 	}
 }
 
-void mapear(struct celula ***mapa){
-	struct celula *it=(*mapa)[0]->dir;
-	struct celula *it2=(*mapa)[0]->dir;
+void mapear(celula ***mapa){
+	celula *it=(*mapa)[0]->dir;
+	celula *it2=(*mapa)[0]->dir;
 	int i=0;
 	int j=0;
 	while(it2!=NULL){
@@ -70,9 +70,9 @@ void mapear(struct celula ***mapa){
 	}
 }
 
-void printmap(struct celula ***mapa){
-	struct celula *it=(*mapa)[0]->dir;
-	struct celula *it2=(*mapa)[0]->dir;
+void printmap(celula ***mapa){
+	celula *it=(*mapa)[0]->dir;
+	celula *it2=(*mapa)[0]->dir;
 	while(it2!=NULL){
 		printf("%d,%d\t",it->linha , it->coluna);
 		if(it->dir != NULL){
