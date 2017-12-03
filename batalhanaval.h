@@ -1,4 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
 
 #define true 1
 #define false 0
@@ -27,6 +30,7 @@ struct celula{
 	int linha;
 	int coluna;
 	int existe;
+	char conteudo;
 	struct celula* dir;
 	struct celula* esq;
 	struct celula* top;
