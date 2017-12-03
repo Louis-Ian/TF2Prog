@@ -346,7 +346,7 @@ int coluna(no** fila){
 //qqr coisa confusa eh desconsiderada por exemplo 'a' '1' '2' ' ' torna-se confuso, visto o espaco no fim q pode ter sido fruto de uma falha motora
 celula* entrada(no** fila, celula*** mapa){
 	int ok1,ok2,ok,i;
-	char *entrada=malloc(30*sizeof(char));	
+	char *entrada=malloc(100*sizeof(char));	
 	char c0,c1;
 	ok=0;
 	while(ok==0){
@@ -412,6 +412,7 @@ celula* entrada(no** fila, celula*** mapa){
 					while(tamanho_fila(fila)!=0){
 						remover_fila(fila);
 					}
+					free(entrada);
 					return t;
 				}
 			} 
