@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-struct celula{
+typedef struct celula{
 	int linha;
 	int coluna;
 	int existe;
@@ -11,19 +11,23 @@ struct celula{
 	struct celula* esq;
 	struct celula* top;
 	struct celula* bot; 
-};
-void inicializar(struct celula*** mapa){
-	(*mapa)=(struct celula**)malloc(12*sizeof(struct celula*));
+}celula;
+
+void inicializar(celula*** mapa){
+	(*mapa)=(celula**)malloc(12*sizeof(celula*));
 	for (int i = 0; i < 12; i++){
 		(*mapa)[i]=NULL;
 	}
 }
-void inserir(struct celula** lista){
-	struct celula* novo=(struct celula*)malloc(sizeof(struct celula));
+
+void inserir(celula** lista){
+
+	celula* novo=(celula*)malloc(sizeof(celula));
 	novo->top=NULL;
 	novo->bot=NULL;
 	novo->existe=0;
 	novo->conteudo=' ';
+
 	if ((*lista)==NULL){
 		(*lista)=novo;
 		novo->dir=NULL;
@@ -36,21 +40,25 @@ void inserir(struct celula** lista){
 	}
 }
 
-void criar(struct celula ***mapa){
-	struct celula *it3;
-	struct celula *it;
-	struct celula *it2;
-	for (int i = 0; i < 12; ++i)
-	{
+void criar(celula ***mapa){
+	celula *it3;
+	celula *it;
+	celula *it2;
+
+	for (int i = 0; i < 12; ++i){
 
 		int c=12;
 		while (--c>=0){
 			inserir(&((*mapa)[i]));
 		}
+
 	}
+
 	for(int i=0; i < 11; i++){
+
 		it=((*mapa)[i]);
 		it2=((*mapa)[i+1]);
+
 		while(it!=NULL){
 			it->bot=it2;
 			it2->top=it;
@@ -60,15 +68,17 @@ void criar(struct celula ***mapa){
 			if(it!=NULL) it=it->dir;
 			if(it2!=NULL) it2=it2->dir;
 		}
+
 		it3->dir=((*mapa)[i+1]);
 		((*mapa)[i+1])->esq=it3;	
 	}
 }
 
-void mapear(struct celula ***mapa){
-	struct celula *it=((*mapa)[0]);
-	int i=0;
-	int j=0;
+void mapear(celula ***mapa){
+	celula *it=((*mapa)[0]);
+	int i,j;
+	i=j=0;
+
 	while(it!=NULL){
 		it->linha=i;
 		it->coluna=j;
@@ -76,27 +86,46 @@ void mapear(struct celula ***mapa){
 		j++;
 		if(j==12){i++;j%=12;}
 	}
+
 }
 
-void printmap(struct celula ***mapa){
-	struct celula *it=(*mapa)[0];
+void printmap(celula ***mapa, celula***mapa2){
+	celula *it=(*mapa)[0];
+	celula *it2;
 	int j=0;
 	int i=1;
-	printf("  |A|B|C|D|E|F|G|H|I|J|K|L|\n");
-	//printf("-------------------------\n");
+	printf("  |A|B|C|D|E|F|G|H|I|J|K|L|                   |A|B|C|D|E|F|G|H|I|J|K|L|\n");
+
 	while(it!=NULL){
+
 		if(j==0 && i<10) printf("%d ",i);
 		if (j==0 && i>=10) printf("%d",i);
 		printf("|%c",it->conteudo);
 		if(it!=NULL) it=it->dir;
 		j++;
-		if(j==12){j%=12;i++;printf("|\n");}
+
+		if(j==12){
+			printf("|                 ");
+			it2=(*mapa2)[i-1];
+			int c=12;
+
+			while(--c>=0){
+				if(i<10 && c==11) printf("%d ",i);
+				if (i>=10 && c==11) printf("%d",i);
+				printf("|%c",it2->conteudo);
+				if(it2!=NULL) it2=it2->dir;
+			}
+
+			j%=12;
+			i++;
+			printf("|\n");
+		}
 	}
 }
 	/*
-	void printmap(struct celula ***mapa){
-		struct celula *it=(*mapa)[0]->dir;
-		struct celula *it2=(*mapa)[0]->dir;
+	void printmap(celula ***mapa){
+		celula *it=(*mapa)[0]->dir;
+		celula *it2=(*mapa)[0]->dir;
 		while(it2!=NULL){
 			printf("%d,%d\t",it->linha , it->coluna);
 			if(it->dir != it2->bot){
@@ -110,12 +139,14 @@ void printmap(struct celula ***mapa){
 	}
 	*/
 
-struct celula* acesso(struct celula*** mapa,int linha, int coluna){
-	struct celula* it=(*mapa)[linha];
+celula* acesso(celula*** mapa, int linha, int coluna){
+	celula* it=(*mapa)[linha];
+
 	while(coluna>0){
 		it=it->dir;
 		coluna--;
 	}
+
 	return it;
 }
 
@@ -124,10 +155,10 @@ int range(int i,int j){
 	return i+(rand()%(j-i+1));
 }
 
-int inializarjogo(struct celula ***mapa){
+int inializarjogo(celula ***mapa){
 	int n=9;
 	int i,j,d;
-	struct celula* it;
+	celula* it;
 	while(--n>=0){
 		d=range(0,1); // 0 horizonal 1 vertical;
 		if(n==8){	//portaaviao
@@ -236,18 +267,18 @@ int inializarjogo(struct celula ***mapa){
 	}
 }
 
-struct no{
+typedef struct no{
 	char c;
-	struct  no* prox;
+	struct no* prox;
 	struct no* fim;
-};
+}no;
 
-void inicializarfila(struct no **fila){
+void inicializar_fila(no** fila){
 	(*fila)=NULL;
 }
 
-void incluirfila(struct no **fila,char x){
-	struct no* novo=malloc(sizeof(struct no));
+void incluir_fila(no** fila, char x){
+	no* novo=malloc(sizeof(no));
 	novo->c=x;
 	novo->prox=NULL;
 	if ((*fila)==NULL){
@@ -258,30 +289,30 @@ void incluirfila(struct no **fila,char x){
 	(*fila)->fim=novo;
 }
 
-void removerfila(struct no **fila){
-		struct no* i=(*fila);
+void remover_fila(no** fila){
+		no* i=(*fila);
 		(*fila)=(*fila)->prox;
 		free(i);
 }
-int tamanhofila(struct no **fila){
+int tamanho_fila(no** fila){
 	int i=0;
-	struct no* it=(*fila);
+	no* it=(*fila);
 	while(it!=NULL){
 		i++;
 		it=it->prox;
 	}
 	return i;
 }
-void percorrer(struct no **fila){
-	struct no* it=(*fila);
+void percorrer_fila(no** fila){
+	no* it=(*fila);
 	while(it!=NULL){
 		printf("%c",it->c);
 		it=it->prox;
 	}
 	printf("\n");
 }
-int linha(struct no** fila){
-	struct no* it=(*fila);
+int linha(no** fila){
+	no* it=(*fila);
 	int num;
 	while(it!=NULL){
 		if((int)(it->c)>=49 && (int)(it->c)<=57){
@@ -298,8 +329,8 @@ int linha(struct no** fila){
 	return num;
 }
 
-int coluna(struct no** fila){
-	struct no* it=(*fila);
+int coluna(no** fila){
+	no* it=(*fila);
 	char c;
 	while(it!=NULL){
 		if(((int)(it->c)>=65 && (int)(it->c)<=77)||((int)(it->c)>=97 && (int)(it->c)<=108)){
@@ -313,7 +344,7 @@ int coluna(struct no** fila){
 }
 
 
-struct celula* entrada(struct no** fila,struct celula***mapa){
+celula* entrada(no** fila, celula*** mapa){
 	int ok1,ok2,ok,i;
 	char *entrada=malloc(30*sizeof(char));	
 	char c0,c1;
@@ -324,38 +355,62 @@ struct celula* entrada(struct no** fila,struct celula***mapa){
 		getchar();
 		ok1=ok2=0;
 		for(i=0; entrada[i]!='\0' && ok==0; i++){
+			
 			c0=entrada[i];
-			if ((int)c0>=49 && (int)c0<=57){
-				ok1=1;
-				incluirfila(fila,c0);
-				if(entrada[i+1]!='\0'){	
-					c1=entrada[i+1];
-					if(((int)c0>49 && (int)c1>=48 && (int)c1<=57)||((int)c0==48&& (int)c1>=51 && (int)c1<=57)){
-						ok1=0;
-						ok=1;
-					}
-					if ((int)c0==49 && (int)c1>=48 && (int)c1<=50){
-						incluirfila(fila,c1);i++;ok=0;ok1=1;			
-					}
 
-				}
-				if(entrada[i+1]!='\0'){
-					if(ok1 && ok2) {ok=1;ok1=0;ok2=0;}
+			if ((int)c0>=49 && (int)c0<=57){//numero
+				if(ok1){ok1=0;ok=1;}
+				else{
+					ok1=1;
+					incluir_fila(fila,c0);
+					i++;
+					if(entrada[i]!='\0'){
+						c1=entrada[i];
+						if (ok1 && ok2 && entrada[i+1]=='\0') {ok1=0;ok=1;} //a1,
+						if((int)c0==49){ //1X
+							if((int)c1>=48 && (int)c1<=50){ //10-12
+								incluir_fila(fila,c1);
+								i++;
+								if(entrada[i]!='\0'){
+									c1=entrada[i];
+									if((int)c1>=48 && (int)c1<=57 || ok1 && ok2){ // XXX... ou ValidoXXX
+										ok1=0;ok=1;
+									}
+								}
+							}
+							if((int)c1>=51 && (int)c1<=57){ //12-19
+								ok1=0;ok=1;
+							}
+						}
+						if((int)c0>49 && (int)c0<=57){ //X0-X9 X>1
+							if((int)c1>=48 && (int)c1<=57){
+								ok1=0;ok=1;
+							}
+						}
+					}
 				}
 			}
-			if(((int)c0>=65 && (int)c0<=77)||((int)c0>=97 && (int)c0<=108)){
-				ok2=1;
-				incluirfila(fila,c0);
-				if(entrada[i+1]!='\0'){
-					if(ok1 && ok2) {ok=1;ok1=0;ok2=0;}
+
+			c0=entrada[i];
+
+			if(((int)c0>=65 && (int)c0<=90)||((int)c0>=97 && (int)c0<=122)){ //letrastotais
+				if((((int)c0>=65 && (int)c0<=77)||((int)c0>=97 && (int)c0<=108)) && !ok2){ //letravalidas
+					ok2=1;
+					incluir_fila(fila,c0);
+					if(entrada[i+1]!='\0'){
+						if(ok1 && ok2){ok1=0;ok2=0;ok1=1;}
+					}
+				}else{
+					ok1=0;ok2=0;ok=1;
 				}
 			}
+
+
 			if (ok1 && ok2){
-				printf("a\n");
-				struct celula* t=acesso(mapa,linha(fila),coluna(fila));
+				celula* t=acesso(mapa,linha(fila),coluna(fila));
 				if(t->existe!=1){
-					while(tamanhofila(fila)!=0){
-						removerfila(fila);
+					while(tamanho_fila(fila)!=0){
+						remover_fila(fila);
 					}
 					return t;
 				}
@@ -363,8 +418,8 @@ struct celula* entrada(struct no** fila,struct celula***mapa){
 		}
 		ok=0;
 		printf("entrada invalida\n");
-		while(tamanhofila(fila)!=0){
-			removerfila(fila);
+		while(tamanho_fila(fila)!=0){
+			remover_fila(fila);
 		}
 	}
 
@@ -374,15 +429,22 @@ struct celula* entrada(struct no** fila,struct celula***mapa){
 
 int main(){
 	srand(time(NULL));
-	struct celula** mapa;
+	celula** mapa;
 	inicializar(&mapa);
 	criar(&mapa);
 	mapear(&mapa);
 	inializarjogo(&mapa);
-	printmap(&mapa);
-	struct no* fila;
-	inicializarfila(&fila);
-	struct celula* t=entrada(&fila,&mapa);
-	printf("coord lxc : %d,%d\n", t->linha, t->coluna);
+	celula** mapa2;
+	inicializar(&mapa2);
+	criar(&mapa2);
+	mapear(&mapa2);
+	inializarjogo(&mapa2);
+	printmap(&mapa,&mapa2);
+	no* fila;
+	inicializar_fila(&fila);
+	while(1){
+		celula* t=entrada(&fila,&mapa);
+		printf("coord lxc : %d,%d\n", t->linha, t->coluna);
+	}
 	return 0;
 }
