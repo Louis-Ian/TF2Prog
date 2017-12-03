@@ -360,7 +360,6 @@ int coluna_fila(no** fila){
 		return (int)c - 97;
 }
 
-//qqr coisa confusa eh desconsiderada por exemplo 'a' '1' '2' ' ' torna-se confuso, visto o espaco no fim q pode ter sido fruto de uma falha motora
 celula* entrada(no** fila, celula*** mapa){
 	int okNum, okChar, ok, i;
 	char *entrada = malloc(100*sizeof(char));	
@@ -376,8 +375,7 @@ celula* entrada(no** fila, celula*** mapa){
 		for(i = 0; entrada[i] != '\0' && ok == 0; i++){
 			
 			c0 = entrada[i];
-			if( !((c0 >= 'A' && c0 <= 'Z') || (c0 >= 'a' && c0 <= 'z')) && !(c1 >= '0' && c1 <= '9') && !okNum && !okChar)
-				ok = 1;//,,,,,,,,a1
+			
 			if (c0 >= '1' && c0 <= '9'){//numero
 				if(okNum){
 					okNum = 0;
@@ -389,8 +387,10 @@ celula* entrada(no** fila, celula*** mapa){
 					if(entrada[i] != '\0'){
 						c1 = entrada[i];
 						if(!(c1 >= '0' && c1 <= '9') && okNum && okChar){
-						okNum = 0;
-						ok = 1;
+							if(c1 != ' '){
+								okNum = 0;
+								ok = 1;
+							}
 						}//ValidoXX a1... X qqr
 						if(c0 == '1'){ //1X
 							if(c1 >= '0' && c1 <= '2'){ //10-12
@@ -399,12 +399,14 @@ celula* entrada(no** fila, celula*** mapa){
 								if(entrada[i] != '\0'){
 									c1 = entrada[i];
 									if(c1 >= '0' && c1 <= '9' || okNum && okChar){ // XXX... ou ValidoXXX a12... X qqr
-										okNum=0;
-										ok = 1;
+										if(c1 != ' '){
+											okNum=0;
+											ok = 1;
+										}
 									}
 								}
 							}
-							if(c1 >= '2' && c1 <= '9'){ //12-19
+							if(c1 >= '3' && c1 <= '9'){ //13-19
 								okNum = 0;
 								ok = 1;
 							}
@@ -426,10 +428,15 @@ celula* entrada(no** fila, celula*** mapa){
 					okChar=1;
 					incluir_fila(fila,c0);
 					if(entrada[i+1] != '\0'){
+						printf("a\n");
 						if(okNum && okChar){
-						okNum=0;
-						okChar=0;
-						okNum=1;
+							printf("b\n");
+							if(entrada[i+1]!=' '){
+								printf("d\n");
+								okNum=0;
+								okChar=0;
+								ok=1;
+							}
 						}//ValidoXXX... X qqr
 					}
 				}else{
