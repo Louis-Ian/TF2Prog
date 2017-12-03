@@ -3,7 +3,6 @@
 #include "batalhanaval.h"
 
 int main(){
-	//Precisam ser 2 tabuleiros.
 	struct celula** mapaJogador;
 	struct celula** mapaPC;
 	inicializar_mapa(&mapaJogador);
