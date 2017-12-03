@@ -2,12 +2,18 @@
 #include <stdlib.h>
 #include "batalhanaval.h"
 
-
 int main(){
-	struct celula** mapa;
-	inicializar(&mapa);
-	criar(&mapa);
-	mapear(&mapa);
-	printmap(&mapa);
+	//Precisam ser 2 tabuleiros.
+	struct celula** mapaJogador;
+	struct celula** mapaPC;
+	inicializar_mapa(&mapaJogador);
+	inicializar_mapa(&mapaPC);
+	criar_mapa(&mapaJogador);
+	criar_mapa(&mapaPC);
+	mapear(&mapaJogador);
+	mapear(&mapaPC);
+	printmap(&mapaJogador);
+	printmap(&mapaPC);
+	
 	return 0;
 }
