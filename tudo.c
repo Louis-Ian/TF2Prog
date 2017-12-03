@@ -428,11 +428,8 @@ celula* entrada(no** fila, celula*** mapa){
 					okChar=1;
 					incluir_fila(fila,c0);
 					if(entrada[i+1] != '\0'){
-						printf("a\n");
 						if(okNum && okChar){
-							printf("b\n");
 							if(entrada[i+1]!=' '){
-								printf("d\n");
 								okNum=0;
 								okChar=0;
 								ok=1;
