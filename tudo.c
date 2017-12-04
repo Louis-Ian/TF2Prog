@@ -445,13 +445,11 @@ celula* entrada(no** fila, celula*** mapa){
 
 			if (okNum && okChar){
 				celula* t = acessar_coordenada(mapa,linha_fila(fila),coluna_fila(fila));
-				if(t->existe!=1){
-					while(tamanho_fila(fila) != 0){
-						remover_fila(fila);
-					}
-					free(entrada);
-					return t;
+				while(tamanho_fila(fila) != 0){
+					remover_fila(fila);
 				}
+				free(entrada);
+				return t;
 			} 
 		}
 		ok=0;
