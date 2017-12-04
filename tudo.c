@@ -10,6 +10,7 @@ typedef struct celula{
 	int linha;
 	int coluna;
 	int existe;
+	int repetido;
 	char conteudo;
 	struct celula* dir;
 	struct celula* esq;
@@ -30,6 +31,7 @@ void inserir_celula(celula** lista){
 	novo->top = NULL;
 	novo->bot = NULL;
 	novo->existe = 0;
+	novo->repetido = 0;
 	novo->conteudo = ' ';
 
 	if ((*lista) == NULL){
@@ -375,6 +377,11 @@ celula* entrada(no** fila, celula*** mapa){
 		for(i = 0; entrada[i] != '\0' && ok == 0; i++){
 			
 			c0 = entrada[i];
+			if(okNum && okChar){
+				okNum=0;
+				okChar=0;
+				ok=1;
+			}
 			
 			if (c0 >= '1' && c0 <= '9'){//numero
 				if(okNum){
@@ -445,15 +452,19 @@ celula* entrada(no** fila, celula*** mapa){
 
 			if (okNum && okChar){
 				celula* t = acessar_coordenada(mapa,linha_fila(fila),coluna_fila(fila));
-				while(tamanho_fila(fila) != 0){
-					remover_fila(fila);
+				if(t->repetido==0){
+					t->repetido=1;
+					while(tamanho_fila(fila) != 0){
+						remover_fila(fila);
+					}
+					free(entrada);
+					return t;
 				}
-				free(entrada);
-				return t;
+				printf("Jogada ja feita - ");
 			} 
 		}
 		ok=0;
-		printf("entrada invalida\n");
+		printf("Entrada Invalida\n");
 		while(tamanho_fila(fila)!=0){
 			remover_fila(fila);
 		}
