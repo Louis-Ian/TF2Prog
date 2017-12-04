@@ -1,10 +1,16 @@
 TO DO:
+	criar menu
+	efeitos jangada
+	reiniciar partidas;
+
+	*trocar 0 e 1 por true e false
+
 	**esconder mapaPC
 	**mostrar ultima jogada
-	efeitos jangada
-	trocar 0 e 1 por true e false
-	criar jogada pc
+	**criar jogada pc
 
 EXTRA:
-	usar ASCII no printmap
+	usar ASCII no printmap (char???)
+	contar embarcações restantes
+
 	
