@@ -6,6 +6,8 @@
 #define true 1
 #define false 0
 
+#define clear_screen() printf("\033[H\033[J")
+
 typedef struct celula{
 	int linha;
 	int coluna;
@@ -140,7 +142,7 @@ void printmap(celula ***mapa, celula***mapa2){
 	}
 }
 
-	/*	void printmap(celula ***mapa){
+/*	void printmap(celula ***mapa){
 		celula *it=(*mapa)[0]->dir;
 		celula *it2=(*mapa)[0]->dir;
 		while(it2!=NULL){
@@ -153,7 +155,7 @@ void printmap(celula ***mapa, celula***mapa2){
 				it2=it2->bot;
 			}
 		}
-	} */
+} */
 
 celula* acessar_coordenada(celula*** mapa, int linha, int coluna){
 	celula* it = (*mapa)[linha];
@@ -369,7 +371,7 @@ celula* entrada(no** fila, celula*** mapa){
 	ok = 0;
 
 	while(ok == 0){
-		printf("Coordenadas do bombardeio:");		
+		printf("\nCoordenadas do bombardeio:");		
 		scanf("%[^\n]",entrada);
 		getchar();
 		okNum = okChar = 0;
@@ -488,8 +490,8 @@ void checar_ataque(celula*** mapa, int linha, int coluna){
 
 
 
-
 int main(){
+	clear_screen();
 
 	srand(time(NULL));
 	celula** mapaJogador;
@@ -510,7 +512,7 @@ int main(){
 
 	while(1){
 		celula* t = entrada(&fila,&mapaPC);
-		printf("coord lxc : %d,%d\n", t->linha, t->coluna);
+		clear_screen();
 		checar_ataque(&mapaPC, t->linha, t->coluna);
 		printmap(&mapaJogador, &mapaPC);
 	}

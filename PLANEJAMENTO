@@ -1,9 +1,6 @@
 TO DO:
 	esconder mapaPC
-	mudar mapa após ataque já atacados( 'O' )
-	ajustar caso 'erro motor'
-	mapa mudar qunado a embarcação é atingida
-	mosrar ultima jogada
+	mostrar ultima jogada
 	efeitos jangada
 	trocar 0 e 1 por true e false
 
