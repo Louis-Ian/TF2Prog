@@ -117,35 +117,37 @@ void printmap(celula ***mapaJogador, celula ***mapaPC){
 	int j = 0;
 	int i = 1;
 
-	printf("     |A|B|C|D|E|F|G|H|I|J|K|L|                      |A|B|C|D|E|F|G|H|I|J|K|L|\n");
+	printf("                 HUMANO                                               COMPUTADOR\n");
+	printf("     ╔══╦═╦═╦═╦═╦═╦═╦═╦═╦═╦═╦═╦═╗                       ╔══╦═╦═╦═╦═╦═╦═╦═╦═╦═╦═╦═╦═╗\n");
+	printf("     ║  ║A║B║C║D║E║F║G║H║I║J║K║L║                       ║  ║A║B║C║D║E║F║G║H║I║J║K║L║\n");
 
 	while(it != NULL){
 
 		if(j == 0 && i < 10)
-			printf("   %d ",i);
+			printf("     ║%d ",i);
 		if(j == 0 && i >= 10)
-			printf("   %d",i);
+			printf("     ║%d",i);
 
-		printf("|%c",it->conteudo);
+		printf("║%c",it->conteudo);
 		if(it != NULL)
 			it = it->dir;
 		j++;
 
 		if(j == 12){
-			printf("|                 ");
+			printf("║                       ");
 			it2 = (*mapaPC)[i-1];
 			int c = 12;
 
 			while(--c >= 0){
 				if(i < 10 && c == 11)
-					printf("   %d ",i);
+					printf("║%d ",i);
 				if(i >= 10 && c == 11)
-					printf("   %d",i);
+					printf("║%d",i);
 
 				if(it2->atingido == false)
-					printf("| ");
+					printf("║ ");
 				else
-					printf("|%c", it2->conteudo);
+					printf("║%c", it2->conteudo);
 				
 				if(it2 != NULL)
 					it2 = it2->dir;
@@ -153,9 +155,10 @@ void printmap(celula ***mapaJogador, celula ***mapaPC){
 
 			j %= 12;
 			i++;
-			printf("|\n");
+			printf("║\n");
 		}
 	}
+	printf("     ╚══╩═╩═╩═╩═╩═╩═╩═╩═╩═╩═╩═╩═╝                       ╚══╩═╩═╩═╩═╩═╩═╩═╩═╩═╩═╩═╩═╝\n");
 }
 
 /*	void printmap(celula ***mapa){
