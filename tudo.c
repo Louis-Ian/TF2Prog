@@ -347,7 +347,7 @@ void percorrer_fila(no** fila){
 	printf("\n");
 }
 
-int linha_fila(no** fila){
+int entrada_linha(no** fila){
 	no* it = (*fila);
 	int num;
 	while(it != NULL){
@@ -365,7 +365,7 @@ int linha_fila(no** fila){
 	return num;
 }
 
-int coluna_fila(no** fila){
+int entrada_coluna(no** fila){
 	no* it = (*fila);
 	char c;
 	while(it != NULL){
@@ -380,7 +380,7 @@ int coluna_fila(no** fila){
 		return (int)c - 97;
 }
 
-celula* entrada(no** fila, celula*** mapa){
+celula* receber_coord_jogador(no** fila, celula*** mapa){
 	int okNum, okChar, ok, i;
 	char *entrada = malloc(100*sizeof(char));	
 	char c0, c1;
@@ -469,7 +469,7 @@ celula* entrada(no** fila, celula*** mapa){
 			}
 
 			if (okNum && okChar){
-				celula* t = acessar_coordenada(mapa,linha_fila(fila),coluna_fila(fila));
+				celula* t = acessar_coordenada(mapa,entrada_linha(fila),entrada_coluna(fila));
 				if(t->repetido==0){
 					t->repetido=1;
 					while(tamanho_fila(fila) != 0){
@@ -490,15 +490,10 @@ celula* entrada(no** fila, celula*** mapa){
 }
 
 void ataque_contra_PC(celula*** mapa, int linha, int coluna){
-	celula* it = (*mapa)[linha];
-
-	while(coluna>0){
-		it = it->dir;
-		coluna--;
-	}
+	celula* it = acessar_coordenada(mapa, linha, coluna);
 
 	if(it->conteudo != ' '){
-//		it->conteudo = '*';
+		//it->conteudo = '*';
 	}else{
 		it->conteudo = 'O';
 	}
@@ -506,14 +501,10 @@ void ataque_contra_PC(celula*** mapa, int linha, int coluna){
 }
 
 void ataque_contra_jogador(celula*** mapa, int linha, int coluna){
-	celula* it = (*mapa)[linha];
+	celula* it = acessar_coordenada(mapa, linha, coluna);
+	
 	char mar = 177;
 	char invisivel = 219;
-
-	while(coluna>0){
-		it = it->dir;
-		coluna--;
-	}
 
 	if(it->conteudo != ' '){
 		it->conteudo = '*';
@@ -584,7 +575,7 @@ int main(){
 	celula* jogadaPC = (celula*)malloc(sizeof(celula));
 	while(1){
 		if(primeiraRodada == true){
-			jogadaH = entrada(&fila,&mapaPC);
+			jogadaH = receber_coord_jogador(&fila,&mapaPC);
 			clear_screen();
 
 			ultimaJogadaH0 = (char)jogadaH->coluna+65;
@@ -619,7 +610,7 @@ int main(){
 		}else{
 			primeiraRodada = false;
 
-			jogadaH = entrada(&fila,&mapaPC);
+			jogadaH = receber_coord_jogador(&fila,&mapaPC);
 
 			ultimaJogadaH0 = (char)jogadaH->coluna+65;
 			if(jogadaH->linha < 9){
