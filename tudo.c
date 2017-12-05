@@ -3,14 +3,24 @@
 #include <string.h>
 #include <time.h>
 
+/*		ASCII - LOCALE
+#include <locale.h>
+setlocale(LC_ALL,"");
+mar = 177;
+invisivel = 219;
+*/
+
 #define true 1
 #define false 0
+
+#define clear_screen() printf("\033[H\033[J")
 
 typedef struct celula{
 	int linha;
 	int coluna;
 	int existe;
 	int repetido;
+	int atingido;
 	char conteudo;
 	struct celula* dir;
 	struct celula* esq;
@@ -32,6 +42,7 @@ void inserir_celula(celula** lista){
 	novo->bot = NULL;
 	novo->existe = 0;
 	novo->repetido = 0;
+	novo->atingido = false;
 	novo->conteudo = ' ';
 
 	if ((*lista) == NULL){
@@ -100,19 +111,21 @@ void mapear(celula ***mapa){
 	}
 }
 
-void printmap(celula ***mapa, celula***mapa2){
-	celula *it = (*mapa)[0];
+void printmap(celula ***mapaJogador, celula ***mapaPC){
+	celula *it = (*mapaJogador)[0];
 	celula *it2;
 	int j = 0;
 	int i = 1;
-	printf("  |A|B|C|D|E|F|G|H|I|J|K|L|                   |A|B|C|D|E|F|G|H|I|J|K|L|\n");
+
+	printf("     |A|B|C|D|E|F|G|H|I|J|K|L|                      |A|B|C|D|E|F|G|H|I|J|K|L|\n");
 
 	while(it != NULL){
 
 		if(j == 0 && i < 10)
-			printf("%d ",i);
+			printf("   %d ",i);
 		if(j == 0 && i >= 10)
-			printf("%d",i);
+			printf("   %d",i);
+
 		printf("|%c",it->conteudo);
 		if(it != NULL)
 			it = it->dir;
@@ -120,15 +133,20 @@ void printmap(celula ***mapa, celula***mapa2){
 
 		if(j == 12){
 			printf("|                 ");
-			it2 = (*mapa2)[i-1];
+			it2 = (*mapaPC)[i-1];
 			int c = 12;
 
 			while(--c >= 0){
 				if(i < 10 && c == 11)
-					printf("%d ",i);
+					printf("   %d ",i);
 				if(i >= 10 && c == 11)
-					printf("%d",i);
-				printf("|%c",it2->conteudo);
+					printf("   %d",i);
+
+				if(it2->atingido == false)
+					printf("| ");
+				else
+					printf("|%c", it2->conteudo);
+				
 				if(it2 != NULL)
 					it2 = it2->dir;
 			}
@@ -140,7 +158,7 @@ void printmap(celula ***mapa, celula***mapa2){
 	}
 }
 
-	/*	void printmap(celula ***mapa){
+/*	void printmap(celula ***mapa){
 		celula *it=(*mapa)[0]->dir;
 		celula *it2=(*mapa)[0]->dir;
 		while(it2!=NULL){
@@ -153,7 +171,7 @@ void printmap(celula ***mapa, celula***mapa2){
 				it2=it2->bot;
 			}
 		}
-	} */
+} */
 
 celula* acessar_coordenada(celula*** mapa, int linha, int coluna){
 	celula* it = (*mapa)[linha];
@@ -369,7 +387,7 @@ celula* entrada(no** fila, celula*** mapa){
 	ok = 0;
 
 	while(ok == 0){
-		printf("Coordenadas do bombardeio:");		
+		printf("\nCoordenadas do bombardeio:");		
 		scanf("%[^\n]",entrada);
 		getchar();
 		okNum = okChar = 0;
@@ -460,7 +478,7 @@ celula* entrada(no** fila, celula*** mapa){
 					free(entrada);
 					return t;
 				}
-				printf("Jogada ja feita - ");
+				printf("Jogada já feita - ");
 			} 
 		}
 		ok=0;
@@ -471,8 +489,26 @@ celula* entrada(no** fila, celula*** mapa){
 	}
 }
 
-void checar_ataque(celula*** mapa, int linha, int coluna){
+void ataque_contra_PC(celula*** mapa, int linha, int coluna){
 	celula* it = (*mapa)[linha];
+
+	while(coluna>0){
+		it = it->dir;
+		coluna--;
+	}
+
+	if(it->conteudo != ' '){
+//		it->conteudo = '*';
+	}else{
+		it->conteudo = 'O';
+	}
+	it->atingido = true;
+}
+
+void ataque_contra_jogador(celula*** mapa, int linha, int coluna){
+	celula* it = (*mapa)[linha];
+	char mar = 177;
+	char invisivel = 219;
 
 	while(coluna>0){
 		it = it->dir;
@@ -484,12 +520,48 @@ void checar_ataque(celula*** mapa, int linha, int coluna){
 	}else{
 		it->conteudo = 'O';
 	}
+	it->atingido = true;
+}
+
+void *itoa(int numLinha, int numColuna, char coluna, char linhaDez, char linhaUni){
+
+	coluna = (char)(numColuna + 95);
+	if(numLinha < 10){
+		linhaUni = (char)(numLinha);
+		linhaDez = '0';
+	}else{
+		linhaDez = '1';
+		linhaUni = numLinha - 10;
+	}
+}
+
+celula* gerar_coord_pc(celula ***mapa){
+	int tentativaLinha, tentativaColuna;
+	celula *it;
+
+	do{
+		tentativaLinha = range(0,11);
+		tentativaColuna = range(0,11);
+
+		it = acessar_coordenada(mapa, tentativaLinha, tentativaColuna);
+	}while(it->atingido == true);
+
+	return it;
 }
 
 
 
-
 int main(){
+	char ultimaJogadaH0;
+	int ultimaJogadaH1, ultimaJogadaH2;
+	
+	char ultimaJogadaPC0;
+	int ultimaJogadaPC1, ultimaJogadaPC2;
+
+
+	int primeiraRodada = true;
+
+	clear_screen();
 
 	srand(time(NULL));
 	celula** mapaJogador;
@@ -508,12 +580,76 @@ int main(){
 	no* fila;
 	inicializar_fila(&fila);
 
+	celula* jogadaH = (celula*)malloc(sizeof(celula));
+	celula* jogadaPC = (celula*)malloc(sizeof(celula));
 	while(1){
-		celula* t = entrada(&fila,&mapaPC);
-		printf("coord lxc : %d,%d\n", t->linha, t->coluna);
-		checar_ataque(&mapaPC, t->linha, t->coluna);
-		printmap(&mapaJogador, &mapaPC);
-	}
+		if(primeiraRodada == true){
+			jogadaH = entrada(&fila,&mapaPC);
+			clear_screen();
 
+			ultimaJogadaH0 = (char)jogadaH->coluna+65;
+			if(jogadaH->linha < 9){
+				ultimaJogadaH2 = jogadaH->linha+1;
+				ultimaJogadaH1 = 0;
+			}else{
+				ultimaJogadaH1 = 1;
+				ultimaJogadaH2 = jogadaH->linha - 9;
+			}
+
+			//itoa(t->linha, t->coluna, ultimaJogadaH[0], ultimaJogadaH[1], ultimaJogadaH[2]);
+			
+			ataque_contra_PC(&mapaPC, jogadaH->linha, jogadaH->coluna);
+
+			jogadaPC = gerar_coord_pc(&mapaJogador);
+
+			ultimaJogadaPC0 = (char)jogadaPC->coluna+65;
+			if(jogadaPC->linha < 9){
+				ultimaJogadaPC2 = jogadaPC->linha+1;
+				ultimaJogadaPC1 = 0;
+			}else{
+				ultimaJogadaPC1 = 1;
+				ultimaJogadaPC2 = jogadaPC->linha - 9;
+			}
+
+			ataque_contra_jogador(&mapaJogador, jogadaPC->linha, jogadaPC->coluna);
+			printmap(&mapaJogador, &mapaPC);
+			printf("\n Último ataque - Jogador: %c%d%d \n", ultimaJogadaH0, ultimaJogadaH1, ultimaJogadaH2);
+			printf("\n Último ataque - Computador: %c%d%d \n", ultimaJogadaPC0, ultimaJogadaPC1, ultimaJogadaPC2);
+
+		}else{
+			primeiraRodada = false;
+
+			jogadaH = entrada(&fila,&mapaPC);
+
+			ultimaJogadaH0 = (char)jogadaH->coluna+65;
+			if(jogadaH->linha < 9){
+				ultimaJogadaH2 = jogadaH->linha+1;
+				ultimaJogadaH1 = 0;
+			}else{
+				ultimaJogadaH1 = 1;
+				ultimaJogadaH2 = jogadaH->linha - 9;
+			}
+
+			//itoa(t->linha, t->coluna, ultimaJogadaH[0], ultimaJogadaH[1], ultimaJogadaH[2]);
+			
+			ataque_contra_PC(&mapaPC, jogadaH->linha, jogadaH->coluna);
+
+			jogadaPC = gerar_coord_pc(&mapaJogador);
+
+			ultimaJogadaPC0 = (char)jogadaPC->coluna+65;
+			if(jogadaPC->linha < 9){
+				ultimaJogadaPC2 = jogadaPC->linha+1;
+				ultimaJogadaPC1 = 0;
+			}else{
+				ultimaJogadaPC1 = 1;
+				ultimaJogadaPC2 = jogadaPC->linha - 9;
+			}
+
+			ataque_contra_jogador(&mapaJogador, jogadaPC->linha, jogadaPC->coluna);
+			printmap(&mapaJogador, &mapaPC);
+			printf("\n Último ataque - Jogador: %c%d%d \n", ultimaJogadaH0, ultimaJogadaH1, ultimaJogadaH2);
+			printf("\n Último ataque - Computador: %c%d%d \n", ultimaJogadaPC0, ultimaJogadaPC1, ultimaJogadaPC2);
+		}
+	}
 	return 0;
 }

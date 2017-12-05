@@ -1,12 +1,16 @@
 TO DO:
-	esconder mapaPC
-	mudar mapa após ataque já atacados( 'O' )
-	ajustar caso 'erro motor'
-	mapa mudar qunado a embarcação é atingida
-	mosrar ultima jogada
+	criar menu
 	efeitos jangada
-	trocar 0 e 1 por true e false
+	reiniciar partidas;
+
+	*trocar 0 e 1 por true e false
+
+	**esconder mapaPC
+	**mostrar ultima jogada
+	**criar jogada pc
 
 EXTRA:
-	usar ASCII no printmap
+	usar ASCII no printmap (char???)
+	contar embarcações restantes
+
 	
