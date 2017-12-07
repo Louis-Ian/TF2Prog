@@ -1,4 +1,5 @@
 TO DO:
+	organizar jogadas do pc
 	criar menu
 	efeitos jangada
 	reiniciar partidas;
@@ -6,6 +7,7 @@ TO DO:
 
 	*trocar 0 e 1 por true e false
 
+	**usar acessar_coordena no começo de ataque_contra
 	**esconder mapaPC
 	**mostrar ultima jogada
 	**criar jogada pc
